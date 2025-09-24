@@ -43,8 +43,20 @@ class MainActivity : AppCompatActivity() {
         var operacion: String = ""
         var numeroanterior: String = ""
         var nuevonumero: String = ""
+        var reiniciar = false
 
         fun actualizarResultado(valor: String) {
+            if (reiniciar) {
+                nuevonumero = ""
+                reiniciar = false
+            }
+
+            if (valor == "-" && nuevonumero.isEmpty()) {
+                nuevonumero = "-"
+                txtresultado.text = nuevonumero
+                return
+            }
+
             if (txtresultado.text == "0.0" && valor != "0") {
                 nuevonumero = valor
             } else {
@@ -79,10 +91,22 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        btnsuma.setOnClickListener { asignarOperacion("+") }
-        btnresta.setOnClickListener { asignarOperacion("-") }
-        btnmultiplicacion.setOnClickListener { asignarOperacion("*") }
-        btndivision.setOnClickListener { asignarOperacion("/") }
+        btnsuma.setOnClickListener {
+            asignarOperacion("+")
+        }
+        btnresta.setOnClickListener {
+            if (nuevonumero.isEmpty() && operacion.isEmpty()) {
+                actualizarResultado("-")
+            } else {
+                asignarOperacion("-")
+            }
+        }
+        btnmultiplicacion.setOnClickListener {
+            asignarOperacion("*")
+        }
+        btndivision.setOnClickListener {
+            asignarOperacion("/")
+        }
 
         btncalcular.setOnClickListener {
             if (numeroanterior.isEmpty() || nuevonumero.isEmpty()) {
@@ -104,13 +128,12 @@ class MainActivity : AppCompatActivity() {
                 "*" -> num1 * num2
                 "/" -> {
                     if (num2 == 0.0) {
-                        txtresultado.text = "División por 0"
+                        txtresultado.text = "Pongale error si no le gusta division por 0"
                         return@setOnClickListener
                     } else {
                         num1 / num2
                     }
                 }
-
                 else -> {
                     txtresultado.text = "Operación inválida"
                     return@setOnClickListener
@@ -129,9 +152,10 @@ class MainActivity : AppCompatActivity() {
             nuevonumero = resultadoFinal
             numeroanterior = ""
             operacion = ""
+            reiniciar = true
+        }
 
-
-            btnborrar.setOnClickListener {
+        btnborrar.setOnClickListener {
                 if (nuevonumero.isNotEmpty()) {
                     nuevonumero = nuevonumero.dropLast(1)
                 }
@@ -141,6 +165,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     txtresultado.text = nuevonumero
                 }
+
             }
 
             btnlimpiar.setOnClickListener {
@@ -151,5 +176,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-}
 
