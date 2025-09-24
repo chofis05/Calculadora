@@ -95,12 +95,13 @@ class MainActivity : AppCompatActivity() {
             asignarOperacion("+")
         }
         btnresta.setOnClickListener {
-            if (nuevonumero.isEmpty() && operacion.isEmpty()) {
+            if (nuevonumero.isEmpty()) {
                 actualizarResultado("-")
             } else {
                 asignarOperacion("-")
             }
         }
+
         btnmultiplicacion.setOnClickListener {
             asignarOperacion("*")
         }
